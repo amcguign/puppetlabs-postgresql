@@ -48,17 +48,26 @@ class postgresql::globals (
 
   $manage_package_repo  = undef
 ) {
+
+  # facter >=2.2 changed the way major/minor distro version reported
+  if $::operatingsystemrelease {
+    $operatingsystemrelease = $::operatingsystemrelease
+  }
+  else {
+    $operatingsystemrelease = $::lsbmajdistrelease
+  }
+
   # We are determining this here, because it is needed by the package repo
   # class.
   $default_version = $::osfamily ? {
     /^(RedHat|Linux)/ => $::operatingsystem ? {
-      'Fedora' => $::operatingsystemrelease ? {
+      'Fedora' => $operatingsystemrelease ? {
         /^(18|19|20)$/ => '9.2',
         /^(17)$/ => '9.1',
         default => undef,
       },
       'Amazon' => '9.2',
-      default => $::operatingsystemrelease ? {
+      default => $operatingsystemrelease ? {
         /^7\./ => '9.2',
         /^6\./ => '8.4',
         /^5\./ => '8.1',
@@ -66,12 +75,12 @@ class postgresql::globals (
       },
     },
     'Debian' => $::operatingsystem ? {
-      'Debian' => $::operatingsystemrelease ? {
+      'Debian' => $operatingsystemrelease ? {
         /^6\./ => '8.4',
         /^(wheezy|7\.)/ => '9.1',
         default => undef,
       },
-      'Ubuntu' => $::operatingsystemrelease ? {
+      'Ubuntu' => $operatingsystemrelease ? {
         /^(14.04)$/ => '9.3',
         /^(11.10|12.04|12.10|13.04|13.10)$/ => '9.1',
         /^(10.04|10.10|11.04)$/ => '8.4',
@@ -104,7 +113,7 @@ class postgresql::globals (
   # Setup of the repo only makes sense globally, so we are doing this here.
   if($manage_package_repo) {
     # Workaround the lack of RHEL7 repositories for now.
-    if ! ($::operatingsystem == 'RedHat' and $::operatingsystemrelease =~ /^7/) {
+    if ! ($::operatingsystem == 'RedHat' and $operatingsystemrelease =~ /^7/) {
       class { 'postgresql::repo':
         ensure  => $ensure,
         version => $globals_version

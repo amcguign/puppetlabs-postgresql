@@ -16,11 +16,6 @@ class postgresql::params inherits postgresql::globals {
   $manage_firewall            = $manage_firewall
   $manage_pg_hba_conf         = pick($manage_pg_hba_conf, true)
 
-  # facter >=2.2 changed the way major/minor distro version reported
-  unless $::operatingsystemrelease {
-    $::operatingsystemrelease = $::lsbmajdistrelease
-  }
-
   # Amazon Linux's OS Family is 'Linux', operating system 'Amazon'.
   case $::osfamily {
     'RedHat', 'Linux': {
