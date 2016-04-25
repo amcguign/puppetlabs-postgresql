@@ -57,9 +57,7 @@ class postgresql::globals (
     $operatingsystemrelease = $::lsbmajdistrelease
   }
 
-  notify{"msg1 = ${::operatingsystemrelease}": }
-  notify{"msg2 = ${::lsbmajdistrelease}": }
-  notify{"msg3 = ${operatingsystemrelease}": }
+  notice{"msg = ${::osfamily}, ${::operatingsystem}, ${::operatingsystemrelease}, ${::lsbmajdistrelease}, ${operatingsystemrelease}": }
 
   # We are determining this here, because it is needed by the package repo
   # class.
