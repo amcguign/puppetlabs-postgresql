@@ -57,18 +57,6 @@ class postgresql::globals (
     $operatingsystemrelease = $::lsbmajdistrelease
   }
 
-  alert('msg = $::osfamily, $::operatingsystem, $::operatingsystemrelease, $::lsbmajdistrelease, $operatingsystemrelease')
-
-  alert($::osfamily)
-
-  alert($::operatingsystem)
-  
-  alert($::operatingsystemrelease)
-  
-  alert($::lsbmajdistrelease)
-  
-  alert($operatingsystemrelease)
-
   # We are determining this here, because it is needed by the package repo
   # class.
   $default_version = $::osfamily ? {
@@ -80,9 +68,9 @@ class postgresql::globals (
       },
       'Amazon' => '9.2',
       default => $operatingsystemrelease ? {
-        /^7\./ => '9.2',
-        /^6\./ => '8.4',
-        /^5\./ => '8.1',
+        /^7/ => '9.2',
+        /^6/ => '8.4',
+        /^5/ => '8.1',
         default => undef,
       },
     },
