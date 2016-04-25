@@ -57,9 +57,13 @@ class postgresql::globals (
     $operatingsystemrelease = $::lsbmajdistrelease
   }
 
-  notify{"amcguign-debug: ${::operatingsystemrelease}": }
-  notify{"amcguign-debug: ${::lsbmajdistrelease}": }
-  notify{"amcguign-debug: ${operatingsystemrelease}": }
+  notify{"${::operatingsystemrelease}": }
+  notify{"${::lsbmajdistrelease}": }
+  notify{"${operatingsystemrelease}": }
+
+  notice{"${::operatingsystemrelease}": }
+  notice{"${::lsbmajdistrelease}": }
+  notice{"${operatingsystemrelease}": }
 
   # We are determining this here, because it is needed by the package repo
   # class.
